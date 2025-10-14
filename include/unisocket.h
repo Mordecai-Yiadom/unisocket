@@ -30,21 +30,32 @@ extern "C"
         #define UNISOCKET_WINDOWS
 
         /*Abstracts away Windows's 'INVALID_SOCKET' macro for sockets. On Windows, this macro evaluates to true if: 's != INVALID_SOCKET'.
-        On Unix systems, this macro evaluates true if: 's >= 0' */
+        On Unix systems, this macro evaluates true if: 's >= 0' 
+            @param
+            s socket
+        */
         #define ISVALIDSOCKET(s) (s != INVALID_SOCKET)
 
         /*Absracts away Windows's 'WSAGetLastError()'. On Unix systems this macro abstracts 'errno'.*/
         #define GETSOCKETERRNO() WSAGetLastError()
 
-        /*Abstracts away Windows's 'closesocket()'. On Unix systems, this macro absracts the socket operation 'close()'*/
+        /*Abstracts away Windows's 'closesocket()'. On Unix systems, this macro absracts the socket operation 'close()'
+            @param 
+            s socket to close.
+        */
         #define CLOSESOCKET(s) closesocket(s)
 
         /*Abstracts Windows's 'WSACleanup()'. Returns '0' in for Unix systems. While this function is available to use directly, 
-        it is best to use the 'UNISOCKET_CLEANUP()' function macro instead. This is the default 'UNISOCKET_CLEANUP()' function macro defined.*/
+        it is best to use the 'UNISOCKET_CLEANUP()' function macro instead. This is the default 'UNISOCKET_CLEANUP()' function macro defined.
+        */
         #define UNISOCKET_CLEANUP() WSACleanup()
 
         /*Define 'UNISOCKET_RETURN_WSADATA' only if you wish to use the filled WSADATA struct in your program.*/
         #ifdef UNISOCKET_RETURN_WSADATA
+            /*Abstracts Windows's 'WSAStartup()' function. This must be called before any socket operations happen.
+                @param
+                wsaDataAddr WSADATA object you would like to fill.
+            */
             #define UNISOCKET_STARTUP(wsaDataAddr) WSAStartup(MAKEWORD(2, 2), wsaDataAddr)
         #else
             /*Abstracts Windows's 'WSAStartup()' function. This must be called before any socket operations happen.*/
@@ -81,13 +92,19 @@ extern "C"
         #define SOCKET int
 
         /*Abstracts away Windows's 'INVALID_SOCKET' macro for sockets. On Windows, this macro evaluates to true if: 's != INVALID_SOCKET'.
-        On Unix systems, this macro evaluates true if: 's >= 0' */
+        On Unix systems, this macro evaluates true if: 's >= 0' 
+            @param
+            s socket
+        */
         #define ISVALIDSOCKET(s) (s >= 0)
 
         /*Absracts away Windows's 'WSAGetLastError()'. On Unix systems this macro abstracts 'errno'.*/
         #define GETSOCKETERRNO() (errno)
 
-        /*Abstracts away Windows's 'closesocket()'. On Unix systems, this macro absracts the socket operation 'close()'*/
+        /*Abstracts away Windows's 'closesocket()'. On Unix systems, this macro absracts the socket operation 'close()'
+            @param
+            s socket
+        */
         #define CLOSESOCKET(s) close(s)
 
         /*Abstracts Windows's 'WSAStartup()'. Returns '0' in for Unix systems. While this function is available to use directly, 
@@ -101,13 +118,22 @@ extern "C"
 
     //Windows and Unix Macros
 
-    /*Abstracts 'shutdown()' for both Windows and Unix systems. It closes the passed socket for reading. */
+    /*Abstracts 'shutdown()' for both Windows and Unix systems. It closes the passed socket for reading. 
+        @param
+        s socket
+    */
     #define SHUTDOWN_RD(s) shutdown(s, 0)
 
-    /*Abstracts 'shutdown()' for both Windows and Unix systems. It closes the passed socket for writing. */
+    /*Abstracts 'shutdown()' for both Windows and Unix systems. It closes the passed socket for writing. 
+        @param
+        s socket
+    */
     #define SHUTDOWN_WR(s) shutdown(s, 1)
 
-    /*Abstracts 'shutdown()' for both Windows and Unix systems. It closes the passed socket for reading and writing. */
+    /*Abstracts 'shutdown()' for both Windows and Unix systems. It closes the passed socket for reading and writing. 
+        @param
+        s socket
+    */
     #define SHUTDOWN_RDWR(s) shutdown(s, 2)
 
 #ifdef __cplusplus
